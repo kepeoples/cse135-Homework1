@@ -1,16 +1,25 @@
 name: Deploy to Droplet
+
 on:
   push:
     branches: [ "main" ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Trust host key so SSH doesn't prompt
+      - name: Trust droplet host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.DO_HOST }} >> ~/.ssh/known_hosts
+
       - name: Rsync to server
         uses: burnett01/rsync-deployments@6.0.0
         with:
-          switches: -avzr --delete --exclude='.git' --exclude='.github'
+          switches: "-avzr --delete --exclude='.git' --exclude='.github'"
           path: .
           remote_path: /var/www/williampeoples135.site
           remote_host: ${{ secrets.DO_HOST }}
