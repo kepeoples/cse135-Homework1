@@ -1,27 +1,17 @@
-name: Deploy to Droplet
-
-on:
-  push:
-    branches: [ "main" ]
+name: SSH key smoke test
+on: [workflow_dispatch]
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      # Trust host key so SSH doesn't prompt
-      - name: Trust droplet host key
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.DO_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Rsync to server
-        uses: burnett01/rsync-deployments@6.0.0
+      - name: Try SSH to droplet
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          switches: "-avzr --delete --exclude='.git' --exclude='.github'"
-          path: .
-          remote_path: /var/www/williampeoples135.site
-          remote_host: ${{ secrets.DO_HOST }}
-          remote_user: ${{ secrets.DO_USER }}
-          remote_key: ${{ secrets.DO_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHPRIVATEKEY }}
+          script: |
+            whoami
+            id
+            ls -al /var/www
