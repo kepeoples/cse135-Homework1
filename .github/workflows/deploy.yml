@@ -1,17 +1,41 @@
-name: SSH key smoke test
-on: [workflow_dispatch]
+name: Deploy static sites to Droplet
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: {}
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        site:
+          - name: williampeoples135.site
+            local_path: "."
+            remote_path: "/var/www/williampeoples135.site"
+          - name: collector.williampeoples135.site
+            local_path: "."
+            remote_path: "/var/www/collector.williampeoples135.site"
+          - name: reporting.williampeoples135.site
+            local_path: "."
+            remote_path: "/var/www/reporting.williampeoples135.site"
+
     steps:
-      - name: Try SSH to droplet
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy ${{ matrix.site.name }} via SCP
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHPRIVATEKEY }}
-          script: |
-            whoami
-            id
-            ls -al /var/www
+          port: 22
+          source: ${{ matrix.site.local_path }}/*
+          target: ${{ matrix.site.remote_path }}
+          overwrite: true
+          rm: true
+          exclude: |
+            .git*
+            .github/
