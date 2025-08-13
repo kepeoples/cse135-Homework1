@@ -27,34 +27,19 @@
 
 ---
 
-## Step 5 – Compress Textual Content
-Configured **gzip** compression in `/etc/nginx/nginx.conf` for the following file types: HTML, CSS, JS, JSON, XML, SVG, and font files.  
+## Summary of HTML File Changes in DevTools After Compression
+After enabling **gzip** compression in Nginx:
+- Chrome DevTools showed a `Content-Encoding: gzip` header in the **Response Headers** for HTML, CSS, and JS files.
+- The “Size” column in the Network tab displayed **smaller transfer sizes** compared to the actual resource sizes, indicating that files were being compressed before being sent to the browser.
+- This resulted in faster page load times and reduced bandwidth usage.
 
-Settings applied:
-- `gzip on;`
-- Compression level: `5`
-- Minimum file size: `256 bytes`
-- Enabled `gzip_vary` and `gzip_proxied`
+---
 
-After reloading Nginx, verified compression with:
-```bash
-curl -sS -H 'Accept-Encoding: gzip' \
-     -u teamuser:*** \
-     -D - https://williampeoples135.site/ \
-     -o /dev/null | grep -i content-encoding
-```
-
-## Step 6 - Verify and Test After Changes
-Validation steps:
-
-Checked response headers from the terminal (using curl) and Chrome DevTools.
-
-Confirmed Content-Encoding: gzip was present for HTML, CSS, and JS files.
-
-Verified reduced transfer sizes in DevTools Size column.
-
-Conclusion:
-Nginx configuration changes are successfully applied, and compression is active across all key file types.
+## Summary of Removing 'Server' Header
+For security hardening, I removed the `Server` header from Nginx responses to prevent exposing server details.  
+- This was done by adding:
+  ```nginx
+  server_tokens off;
 
 
 
