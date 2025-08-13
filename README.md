@@ -17,5 +17,6 @@
 - [ ] Demo GIF/MP4 showing deployment in action.
 
 ## Site Login
-1 username: kevin
-2 password: Kevin09
+1. Username: kevin
+2. Password: Kevin09
+
