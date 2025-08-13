@@ -1,7 +1,8 @@
 # CSE 135 – Team X Website
 
-**Domain:** https://yourdomain.tld  
-**Root directory:** /var/www/yourdomain.tld
+**Domain:** https://williampeoples135.site/ 
+**Root directory:** /var/www/williampeoples135.site
+
 
 ## Deployment process
 1. Code is stored in GitHub.
@@ -14,3 +15,4 @@
 - [x] robots.txt present.
 - [x] Deployed to live domain.
 - [ ] Demo GIF/MP4 showing deployment in action.
+
