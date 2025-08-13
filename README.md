@@ -40,6 +40,14 @@ For security hardening, I removed the `Server` header from Nginx responses to pr
 - This was done by adding:
   ```nginx
   server_tokens off;
+  ```
+
+in the nginx.conf file.
+
+After reloading Nginx, Chrome DevTools and curl -I confirmed that the Server header was no longer present in HTTP responses.
+
+This reduces the amount of information available to potential attackers.
+
 
 
 
