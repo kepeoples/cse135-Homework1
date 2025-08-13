@@ -4,11 +4,25 @@
 **Root Directory:** `/var/www/williampeoples135.site`
 
 ---
+## GitHub Actions – Automated Deployment
 
-## Deployment Process
-1. Code is stored in GitHub.
-2. Push changes to the `main` branch.
-3. Server pulls the latest code (manual `git pull` or via GitHub Actions).
+We use a GitHub Actions workflow (`.github/workflows/deploy.yml`) to deploy changes to our DigitalOcean server automatically when code is pushed to the `main` branch.
+
+### Secrets & Variables
+The following repository secrets are configured for secure SSH-based deployment:
+- **HOST** – The server's domain or IP address.
+- **USERNAME** – SSH username for deployment.
+- **SSHPRIVATEKEY** – Private key for SSH authentication.
+
+These secrets are referenced in the workflow to connect to the server without exposing sensitive information in the repository.
+
+### Deployment Flow
+1. **Push to `main` branch** → triggers GitHub Actions.
+2. **GitHub Actions** checks out the repo.
+3. Workflow uses the configured secrets to connect to the server via SSH.
+4. Executes `git pull` in `/var/www/williampeoples135.site` to update the live site.
+
+
 
 ---
 
@@ -47,6 +61,7 @@ in the nginx.conf file.
 After reloading Nginx, Chrome DevTools and curl -I confirmed that the Server header was no longer present in HTTP responses.
 
 This reduces the amount of information available to potential attackers.
+
 
 
 
