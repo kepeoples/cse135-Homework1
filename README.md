@@ -37,11 +37,12 @@ Settings applied:
 - Enabled `gzip_vary` and `gzip_proxied`
 
 After reloading Nginx, verified compression with:
-bash
+```bash
 curl -sS -H 'Accept-Encoding: gzip' \
      -u teamuser:*** \
      -D - https://williampeoples135.site/ \
      -o /dev/null | grep -i content-encoding
+```
 
 ## Step 6 - Verify and Test After Changes
 Validation steps:
@@ -54,6 +55,7 @@ Verified reduced transfer sizes in DevTools Size column.
 
 Conclusion:
 Nginx configuration changes are successfully applied, and compression is active across all key file types.
+
 
 
 
